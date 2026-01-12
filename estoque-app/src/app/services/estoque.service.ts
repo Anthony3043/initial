@@ -18,7 +18,12 @@ export class EstoqueService {
   private carregarProdutos() {
     const produtosSalvos = localStorage.getItem('produtos');
     if (produtosSalvos) {
-      this.produtos = JSON.parse(produtosSalvos);
+      const produtos = JSON.parse(produtosSalvos);
+      // Converter strings de data de volta para objetos Date
+      this.produtos = produtos.map((p: any) => ({
+        ...p,
+        dataAtualizacao: new Date(p.dataAtualizacao)
+      }));
       this.produtosSubject.next(this.produtos);
     }
   }

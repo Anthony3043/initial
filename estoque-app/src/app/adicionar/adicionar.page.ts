@@ -3,15 +3,15 @@ import { ToastController } from '@ionic/angular';
 import { EstoqueService } from '../services/estoque.service';
 
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss'],
+  selector: 'app-adicionar',
+  templateUrl: 'adicionar.page.html',
+  styleUrls: ['adicionar.page.scss'],
   standalone: false,
 })
-export class Tab2Page {
+export class AdicionarPage {
   produto = {
     nome: '',
-    categoria: '',
+    categoria: 'Geral',
     preco: 0,
     quantidade: 0,
     descricao: ''
@@ -23,7 +23,7 @@ export class Tab2Page {
   ) {}
 
   async adicionarProduto() {
-    if (this.produto.nome && this.produto.categoria && this.produto.preco > 0 && this.produto.quantidade >= 0) {
+    if (this.produto.nome && this.produto.preco > 0 && this.produto.quantidade >= 0) {
       this.estoqueService.adicionarProduto(this.produto);
       
       const toast = await this.toastController.create({
@@ -40,7 +40,7 @@ export class Tab2Page {
   limparFormulario() {
     this.produto = {
       nome: '',
-      categoria: '',
+      categoria: 'Geral',
       preco: 0,
       quantidade: 0,
       descricao: ''

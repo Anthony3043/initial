@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="voltar()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ produto?.nome }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" *ngIf="produto">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ produto.nome }}</ion-card-title>
+      <ion-card-subtitle>{{ produto.categoria }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p *ngIf="produto.descricao">{{ produto.descricao }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Estatísticas</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <div class="stat-box">
+              <h2>R$ {{ produto.preco | number:'1.2-2' }}</h2>
+              <p>Preço Unitário</p>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="stat-box">
+              <h2 [ngClass]="{
+                'text-success': produto.quantidade > 10,
+                'text-warning': produto.quantidade > 0 && produto.quantidade <= 10,
+                'text-danger': produto.quantidade === 0
+              }">
+                {{ produto.quantidade }}
+              </h2>
+              <p>Em Estoque</p>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <div class="stat-box">
+              <h2>R$ {{ (produto.preco * produto.quantidade) | number:'1.2-2' }}</h2>
+              <p>Valor Total em Estoque</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Retirar do Estoque</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Quantidade a Retirar</ion-label>
+        <ion-input 
+          [(ngModel)]="quantidadeRetirar" 
+          type="number" 
+          min="1" 
+          [max]="produto.quantidade"
+          placeholder="1">
+        </ion-input>
+      </ion-item>
+      
+      <ion-button 
+        expand="block" 
+        (click)="retirarEstoque()" 
+        [disabled]="produto.quantidade === 0 || quantidadeRetirar <= 0"
+        class="ion-margin-top">
+        <ion-icon name="remove-circle" slot="start"></ion-icon>
+        Retirar do Estoque
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

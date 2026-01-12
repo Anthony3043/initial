@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { EstoqueService } from '../services/estoque.service';
 import { Produto } from '../models/produto.model';
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss'],
+  selector: 'app-produtos',
+  templateUrl: 'produtos.page.html',
+  styleUrls: ['produtos.page.scss'],
   standalone: false,
 })
-export class Tab1Page implements OnInit {
+export class ProdutosPage implements OnInit {
   produtos: Produto[] = [];
   produtosFiltrados: Produto[] = [];
   mostrarBusca = false;
@@ -17,7 +18,8 @@ export class Tab1Page implements OnInit {
 
   constructor(
     private estoqueService: EstoqueService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -104,5 +106,9 @@ export class Tab1Page implements OnInit {
       ]
     });
     await alert.present();
+  }
+
+  verDetalhes(id: string) {
+    this.router.navigate(['/produto-detalhes', id]);
   }
 }
