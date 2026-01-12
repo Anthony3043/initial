@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { EstoqueService } from '../services/estoque.service';
 import { Produto } from '../models/produto.model';
 import { Retirada } from '../models/retirada.model';
@@ -23,7 +23,7 @@ export class RelatoriosPage implements OnInit {
 
   constructor(
     private estoqueService: EstoqueService,
-    private alertController: AlertController
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -51,26 +51,7 @@ export class RelatoriosPage implements OnInit {
     this.valorTotalRetiradas = retiradas.reduce((total, retirada) => total + (retirada.preco * retirada.quantidade), 0);
   }
 
-  async verRetiradas() {
-    if (this.retiradas.length === 0) {
-      const alert = await this.alertController.create({
-        header: 'Nenhuma Retirada',
-        message: 'Ainda não há produtos retirados do estoque.',
-        buttons: ['OK']
-      });
-      await alert.present();
-      return;
-    }
-
-    const retiradasTexto = this.retiradas.slice(0, 10).map(r => 
-      `${r.nomeProduto}: ${r.quantidade} un. - R$ ${(r.preco * r.quantidade).toFixed(2)} (${new Date(r.dataRetirada).toLocaleDateString('pt-BR')})`
-    ).join('\n');
-
-    const alert = await this.alertController.create({
-      header: 'Últimas Retiradas',
-      message: retiradasTexto,
-      buttons: ['Fechar']
-    });
-    await alert.present();
+  verRetiradas() {
+    this.router.navigate(['/retiradas']);
   }
 }

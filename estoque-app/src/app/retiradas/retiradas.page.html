@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="voltar()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Produtos Retirados</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Resumo das Retiradas</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <div class="stat-item">
+              <h2>{{ totalRetiradas }}</h2>
+              <p>Total de Itens</p>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="stat-item">
+              <h2>R$ {{ valorTotalRetiradas | number:'1.2-2' }}</h2>
+              <p>Valor Total</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="retiradas.length > 0">
+    <ion-card-header>
+      <ion-card-title>Histórico de Retiradas</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-searchbar 
+        [(ngModel)]="termoBusca" 
+        (ionInput)="onBuscaChange()" 
+        placeholder="Buscar produto...">
+      </ion-searchbar>
+      
+      <ion-segment [(ngModel)]="filtroSelecionado" (ionChange)="onFiltroChange()">
+        <ion-segment-button value="todos">
+          <ion-label>Todos</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="semana">
+          <ion-label>1 Semana</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="mes">
+          <ion-label>1 Mês</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="tres-meses">
+          <ion-label>3 Meses</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      
+      <ion-list *ngIf="retiradasFiltradas.length > 0">
+        <ion-item *ngFor="let retirada of retiradasFiltradas">
+          <ion-label>
+            <h3>{{ retirada.nomeProduto }}</h3>
+            <p>{{ retirada.quantidade }} unidades - R$ {{ (retirada.preco * retirada.quantidade) | number:'1.2-2' }}</p>
+            <p>{{ retirada.dataRetirada | date:'dd/MM/yyyy HH:mm' }}</p>
+          </ion-label>
+          <ion-badge color="warning" slot="end">-{{ retirada.quantidade }}</ion-badge>
+        </ion-item>
+      </ion-list>
+      
+      <div *ngIf="retiradasFiltradas.length === 0" class="ion-text-center ion-padding">
+        <ion-icon name="search-outline" size="large" color="medium"></ion-icon>
+        <h3>Nenhum resultado encontrado</h3>
+        <p>Tente ajustar os filtros ou termo de busca.</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="retiradas.length === 0">
+    <ion-card-content class="ion-text-center">
+      <ion-icon name="cube-outline" size="large" color="medium"></ion-icon>
+      <h2>Nenhuma Retirada</h2>
+      <p>Ainda não há produtos retirados do estoque.</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
