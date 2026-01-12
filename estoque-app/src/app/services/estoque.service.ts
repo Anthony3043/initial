@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Produto } from '../models/produto.model';
 import { Retirada } from '../models/retirada.model';
 
@@ -7,82 +8,59 @@ import { Retirada } from '../models/retirada.model';
   providedIn: 'root'
 })
 export class EstoqueService {
-  private produtos: Produto[] = [];
-  private retiradas: Retirada[] = [];
+  private apiUrl = 'http://localhost:3000/api';
   private produtosSubject = new BehaviorSubject<Produto[]>([]);
   private retiradasSubject = new BehaviorSubject<Retirada[]>([]);
   
   produtos$ = this.produtosSubject.asObservable();
   retiradas$ = this.retiradasSubject.asObservable();
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.carregarProdutos();
     this.carregarRetiradas();
   }
 
   private carregarProdutos() {
-    const produtosSalvos = localStorage.getItem('produtos');
-    if (produtosSalvos) {
-      const produtos = JSON.parse(produtosSalvos);
-      this.produtos = produtos.map((p: any) => ({
-        ...p,
-        dataAtualizacao: new Date(p.dataAtualizacao)
-      }));
-      this.produtosSubject.next(this.produtos);
-    }
+    this.http.get<Produto[]>(`${this.apiUrl}/produtos`).subscribe({
+      next: (produtos) => this.produtosSubject.next(produtos),
+      error: (err) => console.error('Erro ao carregar produtos:', err)
+    });
   }
 
   private carregarRetiradas() {
-    const retiradasSalvas = localStorage.getItem('retiradas');
-    if (retiradasSalvas) {
-      const retiradas = JSON.parse(retiradasSalvas);
-      this.retiradas = retiradas.map((r: any) => ({
-        ...r,
-        dataRetirada: new Date(r.dataRetirada)
-      }));
-      this.retiradasSubject.next(this.retiradas);
-    }
-  }
-
-  private salvarProdutos() {
-    localStorage.setItem('produtos', JSON.stringify(this.produtos));
-    this.produtosSubject.next(this.produtos);
-  }
-
-  private salvarRetiradas() {
-    localStorage.setItem('retiradas', JSON.stringify(this.retiradas));
-    this.retiradasSubject.next(this.retiradas);
+    this.http.get<Retirada[]>(`${this.apiUrl}/retiradas`).subscribe({
+      next: (retiradas) => this.retiradasSubject.next(retiradas),
+      error: (err) => console.error('Erro ao carregar retiradas:', err)
+    });
   }
 
   adicionarProduto(produto: Omit<Produto, 'id' | 'dataAtualizacao'>) {
-    const novoProduto: Produto = {
-      ...produto,
-      id: Date.now().toString(),
-      dataAtualizacao: new Date()
-    };
-    this.produtos.push(novoProduto);
-    this.salvarProdutos();
+    this.http.post<Produto>(`${this.apiUrl}/produtos`, produto).subscribe({
+      next: () => this.carregarProdutos(),
+      error: (err) => console.error('Erro ao adicionar produto:', err)
+    });
   }
 
   atualizarProduto(id: string, produto: Partial<Produto>) {
-    const index = this.produtos.findIndex(p => p.id === id);
-    if (index !== -1) {
-      this.produtos[index] = { ...this.produtos[index], ...produto, dataAtualizacao: new Date() };
-      this.salvarProdutos();
-    }
+    this.http.put(`${this.apiUrl}/produtos/${id}`, produto).subscribe({
+      next: () => this.carregarProdutos(),
+      error: (err) => console.error('Erro ao atualizar produto:', err)
+    });
   }
 
   removerProduto(id: string) {
-    this.produtos = this.produtos.filter(p => p.id !== id);
-    this.salvarProdutos();
+    this.http.delete(`${this.apiUrl}/produtos/${id}`).subscribe({
+      next: () => this.carregarProdutos(),
+      error: (err) => console.error('Erro ao remover produto:', err)
+    });
   }
 
   obterProduto(id: string): Produto | undefined {
-    return this.produtos.find(p => p.id === id);
+    return this.produtosSubject.value.find(p => p.id === id);
   }
 
   buscarProdutos(termo: string): Produto[] {
-    return this.produtos.filter(p => 
+    return this.produtosSubject.value.filter(p => 
       p.nome.toLowerCase().includes(termo.toLowerCase())
     );
   }
@@ -90,16 +68,17 @@ export class EstoqueService {
   registrarRetirada(produtoId: string, quantidade: number) {
     const produto = this.obterProduto(produtoId);
     if (produto) {
-      const retirada: Retirada = {
-        id: Date.now().toString(),
+      const retirada = {
         produtoId,
         nomeProduto: produto.nome,
         quantidade,
-        preco: produto.preco,
-        dataRetirada: new Date()
+        preco: produto.preco
       };
-      this.retiradas.push(retirada);
-      this.salvarRetiradas();
+      
+      this.http.post<Retirada>(`${this.apiUrl}/retiradas`, retirada).subscribe({
+        next: () => this.carregarRetiradas(),
+        error: (err) => console.error('Erro ao registrar retirada:', err)
+      });
     }
   }
 }
