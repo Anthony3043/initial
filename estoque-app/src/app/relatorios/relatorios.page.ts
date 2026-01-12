@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 import { EstoqueService } from '../services/estoque.service';
 import { Produto } from '../models/produto.model';
+import { Retirada } from '../models/retirada.model';
 
 @Component({
   selector: 'app-relatorios',
@@ -14,13 +16,23 @@ export class RelatoriosPage implements OnInit {
   valorTotal = 0;
   produtosBaixoEstoque = 0;
   produtosBaixoEstoqueList: Produto[] = [];
-  categorias: { nome: string; quantidade: number }[] = [];
+  
+  totalRetiradas = 0;
+  valorTotalRetiradas = 0;
+  retiradas: Retirada[] = [];
 
-  constructor(private estoqueService: EstoqueService) {}
+  constructor(
+    private estoqueService: EstoqueService,
+    private alertController: AlertController
+  ) {}
 
   ngOnInit() {
     this.estoqueService.produtos$.subscribe(produtos => {
       this.calcularEstatisticas(produtos);
+    });
+    
+    this.estoqueService.retiradas$.subscribe(retiradas => {
+      this.calcularEstatisticasRetiradas(retiradas);
     });
   }
 
@@ -31,16 +43,34 @@ export class RelatoriosPage implements OnInit {
     
     this.produtosBaixoEstoqueList = produtos.filter(produto => produto.quantidade <= 5);
     this.produtosBaixoEstoque = this.produtosBaixoEstoqueList.length;
-    
-    const categoriasMap = new Map<string, number>();
-    produtos.forEach(produto => {
-      const count = categoriasMap.get(produto.categoria) || 0;
-      categoriasMap.set(produto.categoria, count + 1);
+  }
+  
+  calcularEstatisticasRetiradas(retiradas: Retirada[]) {
+    this.retiradas = retiradas.sort((a, b) => new Date(b.dataRetirada).getTime() - new Date(a.dataRetirada).getTime());
+    this.totalRetiradas = retiradas.reduce((total, retirada) => total + retirada.quantidade, 0);
+    this.valorTotalRetiradas = retiradas.reduce((total, retirada) => total + (retirada.preco * retirada.quantidade), 0);
+  }
+
+  async verRetiradas() {
+    if (this.retiradas.length === 0) {
+      const alert = await this.alertController.create({
+        header: 'Nenhuma Retirada',
+        message: 'Ainda não há produtos retirados do estoque.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
+
+    const retiradasTexto = this.retiradas.slice(0, 10).map(r => 
+      `${r.nomeProduto}: ${r.quantidade} un. - R$ ${(r.preco * r.quantidade).toFixed(2)} (${new Date(r.dataRetirada).toLocaleDateString('pt-BR')})`
+    ).join('\n');
+
+    const alert = await this.alertController.create({
+      header: 'Últimas Retiradas',
+      message: retiradasTexto,
+      buttons: ['Fechar']
     });
-    
-    this.categorias = Array.from(categoriasMap.entries()).map(([nome, quantidade]) => ({
-      nome,
-      quantidade
-    }));
+    await alert.present();
   }
 }

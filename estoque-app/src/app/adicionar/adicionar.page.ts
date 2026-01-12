@@ -11,7 +11,6 @@ import { EstoqueService } from '../services/estoque.service';
 export class AdicionarPage {
   produto = {
     nome: '',
-    categoria: 'Geral',
     preco: 0,
     quantidade: 0,
     descricao: ''
@@ -40,7 +39,6 @@ export class AdicionarPage {
   limparFormulario() {
     this.produto = {
       nome: '',
-      categoria: 'Geral',
       preco: 0,
       quantidade: 0,
       descricao: ''

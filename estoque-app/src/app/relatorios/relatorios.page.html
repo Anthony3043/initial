@@ -43,20 +43,27 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
+  <ion-card (click)="verRetiradas()" button>
     <ion-card-header>
-      <ion-card-title>Produtos por Categoria</ion-card-title>
+      <ion-card-title>Produtos Retirados</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-list>
-        <ion-item *ngFor="let categoria of categorias">
-          <ion-label>
-            <h3>{{ categoria.nome }}</h3>
-            <p>{{ categoria.quantidade }} produtos</p>
-          </ion-label>
-          <ion-badge slot="end">{{ categoria.quantidade }}</ion-badge>
-        </ion-item>
-      </ion-list>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <div class="stat-item">
+              <h2>{{ totalRetiradas }}</h2>
+              <p>Itens Retirados</p>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="stat-item">
+              <h2>R$ {{ valorTotalRetiradas | number:'1.2-2' }}</h2>
+              <p>Valor Total Retirado</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-card-content>
   </ion-card>
 
@@ -69,7 +76,7 @@
         <ion-item *ngFor="let produto of produtosBaixoEstoqueList">
           <ion-label>
             <h3>{{ produto.nome }}</h3>
-            <p>{{ produto.categoria }}</p>
+            <p>R$ {{ produto.preco | number:'1.2-2' }}</p>
           </ion-label>
           <ion-badge color="danger" slot="end">{{ produto.quantidade }}</ion-badge>
         </ion-item>

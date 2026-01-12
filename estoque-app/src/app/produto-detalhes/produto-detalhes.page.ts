@@ -61,6 +61,7 @@ export class ProdutoDetalhesPage implements OnInit {
               this.estoqueService.atualizarProduto(this.produto.id, {
                 quantidade: novaQuantidade
               });
+              this.estoqueService.registrarRetirada(this.produto.id, this.quantidadeRetirar);
               this.produto.quantidade = novaQuantidade;
               this.quantidadeRetirar = 1;
               this.mostrarToast('Estoque atualizado com sucesso!', 'success');
