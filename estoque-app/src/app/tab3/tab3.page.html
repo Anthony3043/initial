@@ -1,0 +1,79 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Relatórios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Resumo do Estoque</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <div class="stat-item">
+              <h2>{{ totalProdutos }}</h2>
+              <p>Total de Produtos</p>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="stat-item">
+              <h2>{{ totalItens }}</h2>
+              <p>Total de Itens</p>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <div class="stat-item">
+              <h2>R$ {{ valorTotal | number:'1.2-2' }}</h2>
+              <p>Valor Total</p>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="stat-item">
+              <h2>{{ produtosBaixoEstoque }}</h2>
+              <p>Baixo Estoque</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Produtos por Categoria</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let categoria of categorias">
+          <ion-label>
+            <h3>{{ categoria.nome }}</h3>
+            <p>{{ categoria.quantidade }} produtos</p>
+          </ion-label>
+          <ion-badge slot="end">{{ categoria.quantidade }}</ion-badge>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="produtosBaixoEstoqueList.length > 0">
+    <ion-card-header>
+      <ion-card-title>Produtos com Baixo Estoque</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let produto of produtosBaixoEstoqueList">
+          <ion-label>
+            <h3>{{ produto.nome }}</h3>
+            <p>{{ produto.categoria }}</p>
+          </ion-label>
+          <ion-badge color="danger" slot="end">{{ produto.quantidade }}</ion-badge>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

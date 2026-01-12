@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Adicionar Produto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form (ngSubmit)="adicionarProduto()" #produtoForm="ngForm">
+    <ion-item>
+      <ion-label position="stacked">Nome do Produto</ion-label>
+      <ion-input 
+        [(ngModel)]="produto.nome" 
+        name="nome" 
+        required 
+        placeholder="Digite o nome do produto">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Categoria</ion-label>
+      <ion-select [(ngModel)]="produto.categoria" name="categoria" required>
+        <ion-select-option value="Eletrônicos">Eletrônicos</ion-select-option>
+        <ion-select-option value="Roupas">Roupas</ion-select-option>
+        <ion-select-option value="Casa">Casa</ion-select-option>
+        <ion-select-option value="Esportes">Esportes</ion-select-option>
+        <ion-select-option value="Livros">Livros</ion-select-option>
+        <ion-select-option value="Outros">Outros</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Preço (R$)</ion-label>
+      <ion-input 
+        [(ngModel)]="produto.preco" 
+        name="preco" 
+        type="number" 
+        step="0.01" 
+        required 
+        placeholder="0,00">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Quantidade</ion-label>
+      <ion-input 
+        [(ngModel)]="produto.quantidade" 
+        name="quantidade" 
+        type="number" 
+        required 
+        placeholder="0">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Descrição (Opcional)</ion-label>
+      <ion-textarea 
+        [(ngModel)]="produto.descricao" 
+        name="descricao" 
+        placeholder="Descrição do produto">
+      </ion-textarea>
+    </ion-item>
+
+    <ion-button 
+      expand="block" 
+      type="submit" 
+      [disabled]="!produtoForm.valid" 
+      class="ion-margin">
+      Adicionar Produto
+    </ion-button>
+  </form>
+</ion-content>

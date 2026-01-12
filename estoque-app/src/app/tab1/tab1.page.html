@@ -1,0 +1,53 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Produtos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="abrirBusca()">
+        <ion-icon name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-searchbar 
+    *ngIf="mostrarBusca" 
+    [(ngModel)]="termoBusca" 
+    (ionInput)="buscarProdutos()" 
+    placeholder="Buscar produtos...">
+  </ion-searchbar>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let produto of produtosFiltrados">
+      <ion-item>
+        <ion-label>
+          <h2>{{ produto.nome }}</h2>
+          <p>{{ produto.categoria }} - R$ {{ produto.preco | number:'1.2-2' }}</p>
+          <p>Estoque: {{ produto.quantidade }} unidades</p>
+        </ion-label>
+        <ion-badge 
+          [color]="produto.quantidade > 10 ? 'success' : produto.quantidade > 0 ? 'warning' : 'danger'" 
+          slot="end">
+          {{ produto.quantidade }}
+        </ion-badge>
+      </ion-item>
+      
+      <ion-item-options side="end">
+        <ion-item-option color="primary" (click)="editarProduto(produto)">
+          <ion-icon name="create"></ion-icon>
+          Editar
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="removerProduto(produto.id)">
+          <ion-icon name="trash"></ion-icon>
+          Remover
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button routerLink="/tabs/tab2">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

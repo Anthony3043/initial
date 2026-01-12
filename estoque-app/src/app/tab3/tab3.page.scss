@@ -1,0 +1,20 @@
+.stat-item {
+  text-align: center;
+  
+  h2 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--ion-color-primary);
+  }
+  
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--ion-color-medium);
+  }
+}
+
+ion-card {
+  margin: 16px;
+}
