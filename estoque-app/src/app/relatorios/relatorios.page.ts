@@ -3,12 +3,12 @@ import { EstoqueService } from '../services/estoque.service';
 import { Produto } from '../models/produto.model';
 
 @Component({
-  selector: 'app-tab3',
-  templateUrl: 'tab3.page.html',
-  styleUrls: ['tab3.page.scss'],
+  selector: 'app-relatorios',
+  templateUrl: 'relatorios.page.html',
+  styleUrls: ['relatorios.page.scss'],
   standalone: false,
 })
-export class Tab3Page implements OnInit {
+export class RelatoriosPage implements OnInit {
   totalProdutos = 0;
   totalItens = 0;
   valorTotal = 0;

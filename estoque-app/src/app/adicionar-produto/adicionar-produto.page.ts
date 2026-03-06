@@ -3,12 +3,12 @@ import { ToastController } from '@ionic/angular';
 import { EstoqueService } from '../services/estoque.service';
 
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss'],
+  selector: 'app-adicionar-produto',
+  templateUrl: 'adicionar-produto.page.html',
+  styleUrls: ['adicionar-produto.page.scss'],
   standalone: false,
 })
-export class Tab2Page {
+export class AdicionarProdutoPage {
   produto = {
     nome: '',
     categoria: '',

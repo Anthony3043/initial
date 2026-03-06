@@ -19,7 +19,7 @@
 
   <ion-list>
     <ion-item-sliding *ngFor="let produto of produtosFiltrados">
-      <ion-item>
+      <ion-item (click)="verDetalhes(produto)">
         <ion-label>
           <h2>{{ produto.nome }}</h2>
           <p>{{ produto.categoria }} - R$ {{ produto.preco | number:'1.2-2' }}</p>
@@ -46,7 +46,7 @@
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button routerLink="/tabs/tab2">
+    <ion-fab-button routerLink="/tabs/adicionar-produto">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
