@@ -21,6 +21,15 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-button 
+    *ngIf="produto" 
+    expand="block" 
+    color="danger" 
+    (click)="excluirQuantidade()">
+    <ion-icon name="remove-circle"></ion-icon>
+    Excluir Quantidade
+  </ion-button>
+
   <ion-card *ngIf="!produto">
     <ion-card-content>
       <p>Produto não encontrado.</p>

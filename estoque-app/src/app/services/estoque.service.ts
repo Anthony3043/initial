@@ -55,6 +55,18 @@ export class EstoqueService {
     return this.produtos.find(p => p.id === id);
   }
 
+  reduzirQuantidade(id: string, quantidade: number) {
+    const produto = this.obterProduto(id);
+    if (produto) {
+      produto.quantidade -= quantidade;
+      if (produto.quantidade <= 0) {
+        this.removerProduto(id);
+      } else {
+        this.salvarProdutos();
+      }
+    }
+  }
+
   buscarProdutos(termo: string): Produto[] {
     return this.produtos.filter(p => 
       p.nome.toLowerCase().includes(termo.toLowerCase()) ||
