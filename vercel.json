@@ -1,6 +1,5 @@
 {
-  "rootDirectory": "estoque-app",
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist/estoque-app",
+  "buildCommand": "cd estoque-app && npm run build",
+  "outputDirectory": "estoque-app/dist/estoque-app",
   "framework": "angular"
 }
