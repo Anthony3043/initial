@@ -43,23 +43,6 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Produtos por Categoria</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list>
-        <ion-item *ngFor="let categoria of categorias">
-          <ion-label>
-            <h3>{{ categoria.nome }}</h3>
-            <p>{{ categoria.quantidade }} produtos</p>
-          </ion-label>
-          <ion-badge slot="end">{{ categoria.quantidade }}</ion-badge>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-
   <ion-card *ngIf="produtosBaixoEstoqueList.length > 0">
     <ion-card-header>
       <ion-card-title>Produtos com Baixo Estoque</ion-card-title>
@@ -69,7 +52,6 @@
         <ion-item *ngFor="let produto of produtosBaixoEstoqueList">
           <ion-label>
             <h3>{{ produto.nome }}</h3>
-            <p>{{ produto.categoria }}</p>
           </ion-label>
           <ion-badge color="danger" slot="end">{{ produto.quantidade }}</ion-badge>
         </ion-item>

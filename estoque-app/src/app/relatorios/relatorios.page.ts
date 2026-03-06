@@ -14,7 +14,6 @@ export class RelatoriosPage implements OnInit {
   valorTotal = 0;
   produtosBaixoEstoque = 0;
   produtosBaixoEstoqueList: Produto[] = [];
-  categorias: { nome: string; quantidade: number }[] = [];
 
   constructor(private estoqueService: EstoqueService) {}
 
@@ -31,16 +30,5 @@ export class RelatoriosPage implements OnInit {
     
     this.produtosBaixoEstoqueList = produtos.filter(produto => produto.quantidade <= 5);
     this.produtosBaixoEstoque = this.produtosBaixoEstoqueList.length;
-    
-    const categoriasMap = new Map<string, number>();
-    produtos.forEach(produto => {
-      const count = categoriasMap.get(produto.categoria) || 0;
-      categoriasMap.set(produto.categoria, count + 1);
-    });
-    
-    this.categorias = Array.from(categoriasMap.entries()).map(([nome, quantidade]) => ({
-      nome,
-      quantidade
-    }));
   }
 }

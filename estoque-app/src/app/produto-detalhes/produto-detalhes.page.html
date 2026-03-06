@@ -11,7 +11,6 @@
   <ion-card *ngIf="produto">
     <ion-card-header>
       <ion-card-title>{{ produto.nome }}</ion-card-title>
-      <ion-card-subtitle>{{ produto.categoria }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <p><strong>Preço:</strong> R$ {{ produto.preco | number:'1.2-2' }}</p>

@@ -53,8 +53,6 @@ export class ProdutoDetalhesPage implements OnInit {
             const qtd = parseInt(data.quantidade);
             if (qtd > 0 && qtd <= this.produto!.quantidade) {
               this.estoqueService.reduzirQuantidade(this.produto!.id, qtd);
-              // Atualizar o produto local
-              this.produto!.quantidade -= qtd;
               if (this.produto!.quantidade <= 0) {
                 this.router.navigate(['/tabs/produtos']);
               }

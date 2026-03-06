@@ -11,7 +11,6 @@ import { EstoqueService } from '../services/estoque.service';
 export class AdicionarProdutoPage {
   produto = {
     nome: '',
-    categoria: '',
     preco: 0,
     quantidade: 0,
     descricao: ''
@@ -23,7 +22,7 @@ export class AdicionarProdutoPage {
   ) {}
 
   async adicionarProduto() {
-    if (this.produto.nome && this.produto.categoria && this.produto.preco > 0 && this.produto.quantidade >= 0) {
+    if (this.produto.nome && this.produto.preco > 0 && this.produto.quantidade >= 0) {
       this.estoqueService.adicionarProduto(this.produto);
       
       const toast = await this.toastController.create({
@@ -40,7 +39,6 @@ export class AdicionarProdutoPage {
   limparFormulario() {
     this.produto = {
       nome: '',
-      categoria: '',
       preco: 0,
       quantidade: 0,
       descricao: ''

@@ -22,7 +22,7 @@
       <ion-item (click)="verDetalhes(produto)">
         <ion-label>
           <h2>{{ produto.nome }}</h2>
-          <p>{{ produto.categoria }} - R$ {{ produto.preco | number:'1.2-2' }}</p>
+          <p>R$ {{ produto.preco | number:'1.2-2' }}</p>
           <p>Estoque: {{ produto.quantidade }} unidades</p>
         </ion-label>
         <ion-badge 

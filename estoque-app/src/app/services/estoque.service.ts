@@ -69,8 +69,7 @@ export class EstoqueService {
 
   buscarProdutos(termo: string): Produto[] {
     return this.produtos.filter(p => 
-      p.nome.toLowerCase().includes(termo.toLowerCase()) ||
-      p.categoria.toLowerCase().includes(termo.toLowerCase())
+      p.nome.toLowerCase().includes(termo.toLowerCase())
     );
   }
 }
