@@ -1,16 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Produto } from '../models/produto.model';
 import { Retirada } from '../models/retirada.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EstoqueService {
-  private apiUrl = 'http://localhost:3000/api';
+export class EstoqueService implements OnDestroy {
+  private apiUrl = 'https://back-end-estoque-basico.onrender.com/api';
   private produtosSubject = new BehaviorSubject<Produto[]>([]);
   private retiradasSubject = new BehaviorSubject<Retirada[]>([]);
+  private intervalo: any;
   
   produtos$ = this.produtosSubject.asObservable();
   retiradas$ = this.retiradasSubject.asObservable();
@@ -18,6 +19,14 @@ export class EstoqueService {
   constructor(private http: HttpClient) {
     this.carregarProdutos();
     this.carregarRetiradas();
+    this.intervalo = setInterval(() => {
+      this.carregarProdutos();
+      this.carregarRetiradas();
+    }, 10000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.intervalo);
   }
 
   private carregarProdutos() {
@@ -76,7 +85,10 @@ export class EstoqueService {
       };
       
       this.http.post<Retirada>(`${this.apiUrl}/retiradas`, retirada).subscribe({
-        next: () => this.carregarRetiradas(),
+        next: () => {
+          this.carregarRetiradas();
+          this.carregarProdutos();
+        },
         error: (err) => console.error('Erro ao registrar retirada:', err)
       });
     }
